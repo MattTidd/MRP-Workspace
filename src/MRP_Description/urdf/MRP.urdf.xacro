@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot name='MRP.urdf' xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- include the xacro files that contain our robot -->
+    <xacro:include filename="MRP_Body.xacro"/>
+    <!-- <xacro:include filename="MRP_Peripherals.xacro"/> -->
+    <!-- could also include the gazebo properties here -->
+
+</robot>

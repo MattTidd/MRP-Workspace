@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<!-- start the robot tag here -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- preliminary definitions -->
+    <material name = "black">
+        <color rgba = "0 0 0 1"/>
+    </material>
+
+    <material name = "grey">
+        <color rgba = "0.2 0.2 0.2 1.0"/>
+    </material>
+
+    <!-- LINKS & JOINTS -->
+
+    <!-- base link -->
+    <link name = "base_link">
+    </link>
+
+    <!-- rear spine to base link joint -->
+    <joint name = 'rear chassis joint' type = 'fixed'>
+        <parent link = 'base_link'/>
+        <child link = 'rear_spine_link'/>
+        <!-- offset by the radius of the wheel + the distance from the center to the top plate minus the thickness -->
+        <origin xyz = "0.1335 0 0.126"/>    
+    </joint>
+
+
+    <!-- rear spine piece -->
+    <link name = 'rear_spine_link'>
+        <visual>
+            <origin xyz = "-0.1335 0 0" rpy = "1.570796 0 0"/>
+            <geometry>
+                <mesh filename = "file://$(find MRP_Description)/meshes/chassis_rear_spine.stl" scale = "0.001 0.001 0.001"/>
+            </geometry>
+            <material name = 'black'/>
+        </visual>
+    </link>
+
+
+
+</robot>
