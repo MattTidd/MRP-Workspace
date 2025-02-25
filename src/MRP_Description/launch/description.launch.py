@@ -46,6 +46,12 @@ def generate_launch_description():
             description = 'Use simulation time'
         ),
 
+        DeclareLaunchArgument(
+            name='publish_joints', 
+            default_value='true',
+            description='Launch joint_states_publisher'
+        ),
+
         Node(
             package = 'robot_state_publisher',
             executable = 'robot_state_publisher',
@@ -65,5 +71,15 @@ def generate_launch_description():
             arguments = ['-d', rviz_config_path],
             condition = IfCondition(LaunchConfiguration("rviz")),
             parameters = [{'use_sim_time' : LaunchConfiguration('use_sim_time')}]
-        )
+        ),
+        
+        Node(
+            package='joint_state_publisher',
+            executable='joint_state_publisher',
+            name='joint_state_publisher',
+            condition=IfCondition(LaunchConfiguration("publish_joints")),
+            parameters=[
+                {'use_sim_time': LaunchConfiguration('use_sim_time')}
+            ]
+        ),
     ])
