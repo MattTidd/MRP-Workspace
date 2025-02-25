@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /TF1
         - /RobotModel1
       Splitter Ratio: 0.5
     Tree Height: 719
@@ -55,9 +56,27 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
+        front_lower_bracket_link:
+          Value: true
+        front_spine_link:
+          Value: true
+        front_upper_bracket_link:
+          Value: true
+        rear_left_motor_bracket_link:
+          Value: true
+        rear_left_motor_link:
+          Value: true
+        rear_left_wheel:
+          Value: true
+        rear_right_motor_bracket_link:
+          Value: true
+        rear_right_motor_link:
+          Value: true
+        rear_right_wheel:
+          Value: true
         rear_spine_link:
           Value: true
-      Marker Scale: 1
+      Marker Scale: 0.10000000149011612
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -65,7 +84,18 @@ Visualization Manager:
       Tree:
         base_link:
           rear_spine_link:
-            {}
+            front_spine_link:
+              front_upper_bracket_link:
+                front_lower_bracket_link:
+                  {}
+            rear_left_motor_bracket_link:
+              rear_left_motor_link:
+                rear_left_wheel:
+                  {}
+            rear_right_motor_bracket_link:
+              rear_right_motor_link:
+                rear_right_wheel:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -90,6 +120,51 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        front_lower_bracket_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_spine_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_upper_bracket_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_left_motor_bracket_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_left_motor_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_right_motor_bracket_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_right_motor_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         rear_spine_link:
           Alpha: 1
           Show Axes: false
@@ -149,25 +224,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.1381654739379883
+      Distance: 0.5735145211219788
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.05563821271061897
-        Y: -7.208134047687054e-05
-        Z: 0.03939317911863327
+        X: 0.09722932428121567
+        Y: -0.004591859877109528
+        Z: 0.06553170830011368
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.39039838314056396
+      Pitch: 0.2903987467288971
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.8553979396820068
+      Yaw: 0.5622335076332092
     Saved: ~
 Window Geometry:
   Displays:
