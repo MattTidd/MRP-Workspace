@@ -3,188 +3,167 @@
 <!-- start the robot tag here -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!-- preliminary definitions -->
+    <!--                MATERIALS:                 -->
     <material name = "black">
-        <color rgba = "0 0 0 1"/>
+        <color rgba = "0.1 0.1 0.1 1"/>
     </material>
 
     <material name = "grey">
-        <color rgba = "0.2 0.2 0.2 1.0"/>
-    </material>
-
-    <material name = "blue">
-        <color rgba = "0 0 1 1"/>
-    </material>
-
-    <material name = "green">
-        <color rgba = "0 1 0 1"/>
+        <color rgba = "0.5 0.5 0.5 1"/>
     </material>
 
     <material name = "red">
         <color rgba = "1 0 0 1"/>
     </material>
 
-    <material name = "purple">
-        <color rgba = "1 0 1 1"/>
-    </material>
+    <!--                JOINTS:                 -->
+    
+    <!-- chassis to base link joint -->
+    <joint name = 'B_C_joint' type = 'fixed'>
+        <parent link = 'base_link'/>
+        <child link = 'chassis_link'/>
+        <origin xyz = "0 0 0.122"/>    
+    </joint>
 
-     <material name = "orange">
-        <color rgba = "1 0.65 0 1"/>
-    </material>
+    <!-- rear left motor to chassis joint -->
+    <joint name = 'C_RLM_joint' type = 'fixed'>
+        <parent link = 'chassis_link'/>
+        <child link = 'rear_left_motor'/>
+        <origin xyz = '-0.1355 0.1015 -0.003'/>
+    </joint>
 
-    <material name = "yellow">
-        <color rgba = "1 1 0 1"/>
-    </material>   
+    <!-- rear left wheel to rear left motor joint -->
+    <joint name = 'RLM_RLW_joint' type = 'continuous'>
+        <parent link = 'rear_left_motor'/>
+        <child link = 'rear_left_wheel'/>
+        <origin xyz = '0 0.0425 -0.0255'/>
+        <axis xyz = '0 1 0'/>
+    </joint>
 
-    <!-- LINKS & JOINTS -->
+    <!-- rear right wheel to rear right motor joint -->
+    <joint name = 'RRM_RRW_joint' type = 'continuous'>
+        <parent link = 'rear_right_motor'/>
+        <child link = 'rear_right_wheel'/>
+        <origin xyz = '0 -0.0425 -0.0255'/>
+        <axis xyz = '0 1 0'/>
+    </joint>
+
+    <!-- rear right motor to chassis joint -->
+    <joint name = 'C_RRM_joint' type = 'fixed'>
+        <parent link = 'chassis_link'/>
+        <child link = 'rear_right_motor'/>
+        <origin xyz = '-0.1355 -0.1015 -0.003'/>
+    </joint>
+
+    <!-- chassis to pendulum bracket joint -->
+    <joint name = 'C_to_PB_joint' type = 'revolute'>
+        <parent link = 'chassis_link'/>
+        <child link = 'pendulum_bracket_link'/>
+        <origin xyz = '0.1755 0 -0.010562'/>
+        <axis xyz = '1 0 0'/>
+        <limit lower = '-0.261799' upper ='0.261799' effort = '10' velocity = '1'/>
+    </joint>
+
+    <!-- front left motor to pendulum bracket joint -->
+    <joint name = 'PB_FLM_joint' type = 'fixed'>
+        <parent link = 'pendulum_bracket_link'/>
+        <child link = 'front_left_motor'/>
+        <origin xyz = '0 0.1015 -0.029438'/>
+    </joint>
+
+    <!-- front left wheel to front left motor joint -->
+    <joint name = 'FLM_FLW_joint' type = 'continuous'>
+        <parent link = 'front_left_motor'/>
+        <child link = 'front_left_wheel'/>
+        <origin xyz = '0 0.0425 0.0115'/>
+        <axis xyz = '0 1 0'/>
+    </joint>
+
+    <!-- front right motor to pendulum bracket joint -->
+    <joint name = 'PB_FRM_joint' type = 'fixed'>
+        <parent link = 'pendulum_bracket_link'/>
+        <child link = 'front_right_motor'/>
+        <origin xyz = '0 -0.1015 -0.029438'/>
+    </joint>
+
+    <!-- front right wheel to front right motor joint -->
+    <joint name = 'FRM_FRW_joint' type = 'continuous'>
+        <parent link = 'front_right_motor'/>
+        <child link = 'front_right_wheel'/>
+        <origin xyz = '0 -0.0425 0.0115'/>
+        <axis xyz = '0 1 0'/>
+    </joint>
+    
+    <!--                STRUCTURAL LINKS:                 -->
 
     <!-- base link -->
-    <link name = "base_link">
+    <link name = "base_link"> 
     </link>
 
-    <!-- rear spine to base link joint -->
-    <joint name = 'rear_chassis_base_joint' type = 'fixed'>
-        <parent link = 'base_link'/>
-        <child link = 'rear_spine_link'/>
-        <!-- offset by the radius of the wheel + the distance from the center to the top plate minus the thickness -->
-        <origin xyz = "0.1335 0 0.126"/>    
-    </joint>
-
-    <!-- rear spine piece -->
-    <link name = 'rear_spine_link'>
+    <!-- chassis link -->
+    <link name = 'chassis_link'>
         <visual>
-            <origin xyz = "-0.1335 0 0" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 0 0" rpy = "1.570796 0 0"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/chassis_rear_spine.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/chassis.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-            <material name = 'green'/>
+            <material name = 'black'/>
         </visual>
 
         <collision>
-            <origin xyz = "-0.1335 0 0" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 0 0" rpy = "1.570796 0 0"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/chassis_rear_spine.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/chassis.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-        </collision>
+        </collision>   
     </link>
-
-    <!-- front spine to rear spine joint -->
-    <joint name = 'rear_to_front_chassis_joint' type = 'fixed'>
-        <parent link = 'rear_spine_link'/>
-        <child link = 'front_spine_link'/>
-        <origin xyz = "0 0 0"/>
-    </joint>
-
-    <!-- front spine piece  -->
-    <link name = 'front_spine_link'>
+    
+    <!-- pendulum bracket link -->
+    <link name = 'pendulum_bracket_link'>
         <visual>
-            <origin xyz = "0.1775 0 0" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 0 -0.039438" rpy = "1.570796 0 0"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/chassis_front_spine.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/pendulum_bracket.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-            <material name = 'blue'/>
+            <material name = 'black'/>
         </visual>
 
         <collision>
-            <origin xyz = "0.1775 0 0" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 0 -0.039438" rpy = "1.570796 0 0"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/chassis_front_spine.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/pendulum_bracket.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-        </collision>
-
+        </collision>       
     </link>
 
-    <!-- rear left motor bracket to rear spine joint -->
-    <joint name = 'RL_MB_to_RS_joint' type = "fixed">
-        <parent link = 'rear_spine_link'/>
-        <child link = 'rear_left_motor_bracket_link'/>
-        <origin xyz = "-0.1335 0.10075 0"/>
-    </joint>
+    <!--                MOTORS:                 -->
 
-    <!-- rear left motor bracket piece -->
-    <link name = 'rear_left_motor_bracket_link'>
+    <!-- rear left motor link -->
+    <link name = 'rear_left_motor'>
         <visual>
-            <origin xyz = "-0.02 0.02425 -0.001" rpy = "-1.570796 0 0"/>
+            <origin xyz = "0 0 -0.0185" rpy = "1.570796 0 3.141592"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor_bracket.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
             <material name = 'red'/>
         </visual>
 
         <collision>
-            <origin xyz = "-0.02 0.02425 -0.001" rpy = "-1.570796 0 0"/>
+            <origin xyz = "0 0 -0.0185" rpy = "1.570796 0 3.141592"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor_bracket.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
     </link>
     
-    <!--  rear right motor bracket to rear spine joint -->
-    <joint name = 'RR_MB_to_RS_joint' type = "fixed">
-        <parent link = 'rear_spine_link'/>
-        <child link = 'rear_right_motor_bracket_link'/>
-        <origin xyz = "-0.1335 -0.10075 0"/>
-    </joint>
-
-    <!-- rear right motor bracket piece -->
-    <link name = 'rear_right_motor_bracket_link'>
-        <visual>
-            <origin xyz = "0.02 -0.02425 -0.001" rpy = "-1.570796 0 3.141592"/>
-            <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor_bracket.stl" scale = "0.001 0.001 0.001"/>
-            </geometry>
-            <material name = 'red'/>
-        </visual>
-
-        <collision>
-            <origin xyz = "0.02 -0.02425 -0.001" rpy = "-1.570796 0 3.141592"/>
-            <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor_bracket.stl" scale = "0.001 0.001 0.001"/>
-            </geometry>
-            <material name = 'red'/>
-        </collision>
-    </link>
-
-    <!-- rear left motor to rear left bracket joint -->
-    <joint name = 'RL_M_to_RL_MB_joint' type = "fixed">
-        <parent link = 'rear_left_motor_bracket_link'/>
-        <child link = 'rear_left_motor_link'/>
-        <origin xyz = "0 0 -0.003"/>
-    </joint>
-
-    <!-- rear left motor -->
-    <link name = 'rear_left_motor_link'>
-        <visual>
-            <origin xyz = "0 0 -0.0185" rpy = "-1.570796 3.141592 0"/>
-            <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
-            </geometry>
-            <material name = 'purple'/>
-        </visual>
-
-        <collision>
-            <origin xyz = "0 0 -0.0185" rpy = "-1.570796 3.141592 0"/>
-            <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
-            </geometry>
-        </collision>
-    </link>
-
-    <!-- rear right motor to rear right bracket joint -->
-    <joint name = 'RR_M_to_RR_MB_joint' type = "fixed">
-        <parent link = 'rear_right_motor_bracket_link'/>
-        <child link = 'rear_right_motor_link'/>
-        <origin xyz = "0 0 -0.003"/>
-    </joint>
-
-    <!-- rear right motor -->
-    <link name = 'rear_right_motor_link'>
+    <!-- rear right motor link -->
+    <link name = 'rear_right_motor'>
         <visual>
             <origin xyz = "0 0 -0.0185" rpy = "1.570796 0 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-            <material name = 'purple'/>
+            <material name = 'red'/>
         </visual>
 
         <collision>
@@ -195,13 +174,43 @@
         </collision>
     </link>
 
-    <!-- rear left wheel to left motor joint -->
-    <joint name = 'RL_W_to_RL_M_joint' type = 'continuous'>
-        <parent link = 'rear_left_motor_link'/>
-        <child link = 'rear_left_wheel'/>
-        <origin xyz = "0 0.0425 -0.025533"/>
-        <axis xyz = "0 1 0"/>
-    </joint>
+    <!-- front left motor -->
+    <link name = 'front_left_motor'>
+        <visual>
+            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 3.141592"/>
+            <geometry>
+                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
+            </geometry>
+            <material name = 'red'/>
+        </visual>
+
+        <collision>
+            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 3.141592"/>
+            <geometry>
+                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- front right motor -->
+    <link name = 'front_right_motor'>
+        <visual>
+            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 0"/>
+            <geometry>
+                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
+            </geometry>
+            <material name = 'red'/>
+        </visual>
+
+        <collision>
+            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 0"/>
+            <geometry>
+                <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!--                WHEELS:                 -->
 
     <!-- rear left wheel -->
     <link name = 'rear_left_wheel'>
@@ -227,18 +236,10 @@
         </inertial>
     </link>
 
-    <!-- rear right wheel to right motor joint -->
-    <joint name = 'RR_W_to_RR_M_joint' type = 'continuous'>
-        <parent link = 'rear_right_motor_link'/>
-        <child link = 'rear_right_wheel'/>
-        <origin xyz = "0 -0.0425 -0.025533"/>
-        <axis xyz = "0 1 0"/>
-    </joint>
-
-    <!-- rear left wheel -->
+    <!-- rear right wheel -->
     <link name = 'rear_right_wheel'>
         <visual>
-            <origin xyz = "0 -0.012 0" rpy = "-1.570796 0 1.570796"/>
+            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -246,7 +247,7 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 -1.570796"/>
+            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -259,55 +260,52 @@
         </inertial>
     </link>
 
-    <!-- front upper bracket to front spine joint -->
-    <joint name = 'UB_to_FS_joint' type = 'fixed'>
-        <parent link = 'front_spine_link'/>
-        <child link = 'front_upper_bracket_link'/>
-        <origin xyz = '0.1775 0 0'/>
-    </joint>
-
-    <!-- 0.1955 -->
-
-    <!-- front upper bracket link -->
-    <link name = 'front_upper_bracket_link'>
+    <!-- front left wheel -->
+    <link name = 'front_left_wheel'>
         <visual>
-            <origin xyz = "0.018 0.0355 -0.001" rpy = "-1.570796 0 0"/>
+            <origin xyz = "0 0.012 0" rpy = "1.570796 0 -1.570796"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/pendulum_top_bracket.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-            <material name = 'orange'/>
+            <material name = 'grey'/>
         </visual>
 
         <collision>
-            <origin xyz = "0 0.0355 -0.001" rpy = "-1.570796 0 0"/>
+            <origin xyz = "0 0.012 0" rpy = "1.570796 0 -1.570796"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/pendulum_top_bracket.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
+
+        <inertial>
+            <mass value = "0.15"/>
+            <inertia ixx="0.028564013" ixy="-0.000252573" ixz="-0.000026632" 
+            iyy="0.000671702" iyz="-0.002904292" izz="0.027909635"/>
+        </inertial>
     </link>
 
-    <!-- front lower bracket to front upper bracket joint -->
-    <joint name = 'LB_to_UB_joint' type = 'fixed'>
-        <parent link = 'front_upper_bracket_link'/>
-        <child link = 'front_lower_bracket_link'/>
-        <origin xyz = '0 0 -0.1'/>
-    </joint>
-
-    <!-- front lower bracket link -->
-    <link name = 'front_lower_bracket_link'>
+    <!-- front left wheel -->
+    <link name = 'front_right_wheel'>
         <visual>
-            <origin xyz = "0 0 0" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/pendulum_bottom_with_pin.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-            <material name = 'yellow'/>
+            <material name = 'grey'/>
         </visual>
 
         <collision>
-            <origin xyz = "0 0 0" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
             <geometry>
-                <mesh filename = "file://$(find MRP_Description)/meshes/pendulum_bottom_with_pin.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
+
+        <inertial>
+            <mass value = "0.15"/>
+            <inertia ixx="0.028564013" ixy="-0.000252573" ixz="-0.000026632" 
+            iyy="0.000671702" iyz="-0.002904292" izz="0.027909635"/>
+        </inertial>
     </link>
+
 </robot>
