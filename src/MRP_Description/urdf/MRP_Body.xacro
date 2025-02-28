@@ -29,30 +29,30 @@
     <joint name = 'C_RLM_joint' type = 'fixed'>
         <parent link = 'chassis_link'/>
         <child link = 'rear_left_motor'/>
-        <origin xyz = '-0.1355 0.1015 -0.003'/>
+        <origin xyz = '-0.1355 0.1015 -0.003' rpy = '-1.570796 0 0'/>
     </joint>
 
     <!-- rear left wheel to rear left motor joint -->
     <joint name = 'RLM_RLW_joint' type = 'continuous'>
         <parent link = 'rear_left_motor'/>
         <child link = 'rear_left_wheel'/>
-        <origin xyz = '0 0.0425 -0.0255'/>
-        <axis xyz = '0 1 0'/>
+        <origin xyz = '0 0.0255 0.0425' rpy = '0 0 0'/>
+        <axis xyz = '0 0 1'/>
     </joint>
 
     <!-- rear right wheel to rear right motor joint -->
     <joint name = 'RRM_RRW_joint' type = 'continuous'>
         <parent link = 'rear_right_motor'/>
         <child link = 'rear_right_wheel'/>
-        <origin xyz = '0 -0.0425 -0.0255'/>
-        <axis xyz = '0 1 0'/>
+        <origin xyz = '0 -0.0255 0.0425' rpy = '0 0 0'/>
+        <axis xyz = '0 0 -1'/>
     </joint>
 
     <!-- rear right motor to chassis joint -->
     <joint name = 'C_RRM_joint' type = 'fixed'>
         <parent link = 'chassis_link'/>
         <child link = 'rear_right_motor'/>
-        <origin xyz = '-0.1355 -0.1015 -0.003'/>
+        <origin xyz = '-0.1355 -0.1015 -0.003' rpy = '1.570796 0 0'/>
     </joint>
 
     <!-- chassis to pendulum bracket joint -->
@@ -68,30 +68,30 @@
     <joint name = 'PB_FLM_joint' type = 'fixed'>
         <parent link = 'pendulum_bracket_link'/>
         <child link = 'front_left_motor'/>
-        <origin xyz = '0 0.1015 -0.029438'/>
+        <origin xyz = '0 0.1015 -0.029438' rpy = '-1.570796 0 0'/>
     </joint>
 
     <!-- front left wheel to front left motor joint -->
     <joint name = 'FLM_FLW_joint' type = 'continuous'>
         <parent link = 'front_left_motor'/>
         <child link = 'front_left_wheel'/>
-        <origin xyz = '0 0.0425 0.0115'/>
-        <axis xyz = '0 1 0'/>
+        <origin xyz = '0 -0.0115 0.0425' rpy = '0 0 0'/>
+        <axis xyz = '0 0 1'/>
     </joint>
 
     <!-- front right motor to pendulum bracket joint -->
     <joint name = 'PB_FRM_joint' type = 'fixed'>
         <parent link = 'pendulum_bracket_link'/>
         <child link = 'front_right_motor'/>
-        <origin xyz = '0 -0.1015 -0.029438'/>
+        <origin xyz = '0 -0.1015 -0.029438' rpy = '1.570796 0 0'/>
     </joint>
 
     <!-- front right wheel to front right motor joint -->
     <joint name = 'FRM_FRW_joint' type = 'continuous'>
         <parent link = 'front_right_motor'/>
         <child link = 'front_right_wheel'/>
-        <origin xyz = '0 -0.0425 0.0115'/>
-        <axis xyz = '0 1 0'/>
+        <origin xyz = '0 0.0115 0.0425' rpy = '0 0 0'/>
+        <axis xyz = '0 0 -1'/>
     </joint>
     
     <!--                STRUCTURAL LINKS:                 -->
@@ -115,7 +115,12 @@
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/chassis.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-        </collision>   
+        </collision>
+
+        <inertial>
+            <mass value = '0.27224'/>
+            <inertia ixx = '2.853307738e-3' ixy = '0' ixz = '0' iyy = '1.442962747e-3' iyz = '0' izz = '4.291733152e-3'/>
+        </inertial>
     </link>
     
     <!-- pendulum bracket link -->
@@ -133,7 +138,12 @@
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/pendulum_bracket.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
-        </collision>       
+        </collision>   
+
+        <inertial>
+            <mass value = '0.08492'/>
+            <inertia ixx = '3.682697333e-5' ixy = '0' ixz = '0' iyy = '4.670883067e-4' iyz = '0' izz = '4.685319467e-4'/>
+        </inertial>    
     </link>
 
     <!--                MOTORS:                 -->
@@ -141,7 +151,7 @@
     <!-- rear left motor link -->
     <link name = 'rear_left_motor'>
         <visual>
-            <origin xyz = "0 0 -0.0185" rpy = "1.570796 0 3.141592"/>
+            <origin xyz = "0 0.0185 0 " rpy = "0 0 3.141592"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -149,17 +159,22 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 0 -0.0185" rpy = "1.570796 0 3.141592"/>
+            <origin xyz = "0 0.0185 0" rpy = "0 0 3.141592"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
+
+        <inertial>
+            <mass value = '0.1579'/>
+            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+        </inertial> 
     </link>
     
     <!-- rear right motor link -->
     <link name = 'rear_right_motor'>
         <visual>
-            <origin xyz = "0 0 -0.0185" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 -0.0185 0" rpy = "0 0 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -167,17 +182,22 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 0 -0.0185" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 -0.0185 0" rpy = "0 0 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
+
+        <inertial>
+            <mass value = '0.1579'/>
+            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+        </inertial> 
     </link>
 
     <!-- front left motor -->
     <link name = 'front_left_motor'>
         <visual>
-            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 3.141592"/>
+            <origin xyz = "0 -0.0185 0" rpy = "0 0 3.141592"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -185,17 +205,22 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 3.141592"/>
+            <origin xyz = "0 -0.0185 0" rpy = "0 0 3.141592"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
+
+        <inertial>
+            <mass value = '0.1579'/>
+            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+        </inertial> 
     </link>
 
     <!-- front right motor -->
     <link name = 'front_right_motor'>
         <visual>
-            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 0.0185 0" rpy = "0 0 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -203,11 +228,16 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 0 0.0185" rpy = "1.570796 0 0"/>
+            <origin xyz = "0 0.0185 0" rpy = "0 0 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/520_dc_gear_motor.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
+
+        <inertial>
+            <mass value = '0.1579'/>
+            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+        </inertial> 
     </link>
 
     <!--                WHEELS:                 -->
@@ -215,7 +245,7 @@
     <!-- rear left wheel -->
     <link name = 'rear_left_wheel'>
         <visual>
-            <origin xyz = "0 0.012 0" rpy = "1.570796 0 -1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -223,23 +253,22 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 0.012 0" rpy = "1.570796 0 -1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
 
         <inertial>
-            <mass value = "0.15"/>
-            <inertia ixx="0.028564013" ixy="-0.000252573" ixz="-0.000026632" 
-            iyy="0.000671702" iyz="-0.002904292" izz="0.027909635"/>
+            <mass value = "0.147595"/>
+            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
         </inertial>
     </link>
 
     <!-- rear right wheel -->
     <link name = 'rear_right_wheel'>
         <visual>
-            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -247,23 +276,22 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
 
         <inertial>
-            <mass value = "0.15"/>
-            <inertia ixx="0.028564013" ixy="-0.000252573" ixz="-0.000026632" 
-            iyy="0.000671702" iyz="-0.002904292" izz="0.027909635"/>
+            <mass value = "0.147595"/>
+            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
         </inertial>
     </link>
 
     <!-- front left wheel -->
     <link name = 'front_left_wheel'>
         <visual>
-            <origin xyz = "0 0.012 0" rpy = "1.570796 0 -1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -271,23 +299,22 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 0.012 0" rpy = "1.570796 0 -1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
 
         <inertial>
-            <mass value = "0.15"/>
-            <inertia ixx="0.028564013" ixy="-0.000252573" ixz="-0.000026632" 
-            iyy="0.000671702" iyz="-0.002904292" izz="0.027909635"/>
+            <mass value = "0.147595"/>
+            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
         </inertial>
     </link>
 
-    <!-- front left wheel -->
+    <!-- front right wheel -->
     <link name = 'front_right_wheel'>
         <visual>
-            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -295,16 +322,15 @@
         </visual>
 
         <collision>
-            <origin xyz = "0 -0.012 0" rpy = "1.570796 0 1.570796"/>
+            <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
                 <mesh filename = "file://$(find MRP_Description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
             </geometry>
         </collision>
 
         <inertial>
-            <mass value = "0.15"/>
-            <inertia ixx="0.028564013" ixy="-0.000252573" ixz="-0.000026632" 
-            iyy="0.000671702" iyz="-0.002904292" izz="0.027909635"/>
+            <mass value = "0.147595"/>
+            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
         </inertial>
     </link>
 
