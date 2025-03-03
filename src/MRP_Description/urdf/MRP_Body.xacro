@@ -3,7 +3,9 @@
 <!-- start the robot tag here -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!--                MATERIALS:                 -->
+    <!--                PROPERTIES:                 -->
+    <xacro:property name='a' value='4'/>
+
     <material name = "black">
         <color rgba = "0.1 0.1 0.1 1"/>
     </material>
@@ -22,8 +24,9 @@
     <joint name = 'B_C_joint' type = 'fixed'>
         <parent link = 'base_link'/>
         <child link = 'chassis_link'/>
-        <origin xyz = "0 0 0.122"/>    
+        <origin xyz = "0 0 0.125"/>    
     </joint>
+    <!-- 0.122 -->
 
     <!-- rear left motor to chassis joint -->
     <joint name = 'C_RLM_joint' type = 'fixed'>
@@ -119,7 +122,13 @@
 
         <inertial>
             <mass value = '0.27224'/>
-            <inertia ixx = '2.853307738e-3' ixy = '0' ixz = '0' iyy = '1.442962747e-3' iyz = '0' izz = '4.291733152e-3'/>
+            <inertia 
+                        ixx = '${a * 2.853307738e-3}' 
+                        ixy = '${a * 1e-6}' 
+                        ixz = '${a * 1e-6}' 
+                        iyy = '${a* 1.442962747e-3}' 
+                        iyz = '${a * 1e-6}' 
+                        izz = '${a * 4.291733152e-3}'/>
         </inertial>
     </link>
     
@@ -142,7 +151,13 @@
 
         <inertial>
             <mass value = '0.08492'/>
-            <inertia ixx = '3.682697333e-5' ixy = '0' ixz = '0' iyy = '4.670883067e-4' iyz = '0' izz = '4.685319467e-4'/>
+            <inertia 
+                        ixx = '${a * 3.682697333e-5}' 
+                        ixy = '${a * 1e-6}' 
+                        ixz = '${a * 1e-6}'
+                        iyy = '${a * 4.670883067e-4}' 
+                        iyz = '${a * 1e-6}' 
+                        izz = '${a * 4.685319467e-4}'/>
         </inertial>    
     </link>
 
@@ -167,7 +182,13 @@
 
         <inertial>
             <mass value = '0.1579'/>
-            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+            <inertia 
+                        ixx = '${a * 5.188001875e-5}' 
+                        ixy = '${a * 1e-6}'
+                        ixz = '${a * 1e-6}'
+                        iyy = '${a * 5.188001875e-5}' 
+                        iyz = '${a * 1e-6}' 
+                        izz = '${a * 2.70206375e-5}'/>
         </inertial> 
     </link>
     
@@ -190,7 +211,13 @@
 
         <inertial>
             <mass value = '0.1579'/>
-            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+            <inertia 
+                        ixx = '${a * 5.188001875e-5}' 
+                        ixy = '${a * 1e-6}'
+                        ixz = '${a * 1e-6}'
+                        iyy = '${a * 5.188001875e-5}' 
+                        iyz = '${a * 1e-6}' 
+                        izz = '${a * 2.70206375e-5}'/>
         </inertial> 
     </link>
 
@@ -213,7 +240,13 @@
 
         <inertial>
             <mass value = '0.1579'/>
-            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+            <inertia 
+                        ixx = '${a * 5.188001875e-5}' 
+                        ixy = '${a * 1e-6}'
+                        ixz = '${a * 1e-6}'
+                        iyy = '${a * 5.188001875e-5}' 
+                        iyz = '${a * 1e-6}' 
+                        izz = '${a * 2.70206375e-5}'/>
         </inertial> 
     </link>
 
@@ -236,7 +269,13 @@
 
         <inertial>
             <mass value = '0.1579'/>
-            <inertia ixx = '5.188001875e-5' ixy = '0' ixz = '0' iyy = '5.188001875e-5' iyz = '0' izz = '2.70206375e-5'/>
+            <inertia 
+                        ixx = '${a * 5.188001875e-5}' 
+                        ixy = '${a * 1e-6}'
+                        ixz = '${a * 1e-6}'
+                        iyy = '${a * 5.188001875e-5}' 
+                        iyz = '${a * 1e-6}' 
+                        izz = '${a * 2.70206375e-5}'/>
         </inertial> 
     </link>
 
@@ -261,7 +300,13 @@
 
         <inertial>
             <mass value = "0.147595"/>
-            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
+            <inertia 
+                        ixx = "${a * 3.20634763e-4}" 
+                        ixy = "${a * 1e-6}" 
+                        ixz = "${a * 1e-6}" 
+                        iyy = "${a * 3.20634763e-4}" 
+                        iyz = "${a * 1e-6}" 
+                        izz = "${a * 6.314298594e-4}"/>
         </inertial>
     </link>
 
@@ -284,7 +329,13 @@
 
         <inertial>
             <mass value = "0.147595"/>
-            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
+            <inertia 
+                        ixx = "${a * 3.20634763e-4}" 
+                        ixy = "${a * 1e-6}" 
+                        ixz = "${a * 1e-6}" 
+                        iyy = "${a * 3.20634763e-4}" 
+                        iyz = "${a * 1e-6}" 
+                        izz = "${a * 6.314298594e-4}"/>
         </inertial>
     </link>
 
@@ -307,7 +358,13 @@
 
         <inertial>
             <mass value = "0.147595"/>
-            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
+            <inertia 
+                        ixx = "${a * 3.20634763e-4}"
+                        ixy = "${a * 1e-6}" 
+                        ixz = "${a * 1e-6}" 
+                        iyy = "${a * 3.20634763e-4}" 
+                        iyz = "${a * 1e-6}" 
+                        izz = "${a * 6.314298594e-4}"/>
         </inertial>
     </link>
 
@@ -330,7 +387,13 @@
 
         <inertial>
             <mass value = "0.147595"/>
-            <inertia ixx="3.20634763e-4" ixy="0" ixz="0" iyy="3.20634763e-4" iyz="0" izz="6.314298594e-4"/>
+            <inertia 
+                        ixx = "${a * 3.20634763e-4}" 
+                        ixy = "${a * 1e-6}" 
+                        ixz = "${a * 1e-6}" 
+                        iyy = "${a * 3.20634763e-4}" 
+                        iyz = "${a * 1e-6}" 
+                        izz = "${a * 6.314298594e-4}"/>
         </inertial>
     </link>
 

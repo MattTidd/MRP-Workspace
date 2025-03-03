@@ -4,7 +4,6 @@
     <!-- include the xacro files that contain our robot -->
     <xacro:include filename="MRP_Body.xacro"/>
     <xacro:include filename="MRP_Gazebo_Properties.xacro"/>
-    <!-- <xacro:include filename="MRP_Peripherals.xacro"/> -->
-    <!-- could also include the gazebo properties here -->
+    <xacro:include filename="MRP_Gazebo_Control.xacro"/>
 
 </robot>
