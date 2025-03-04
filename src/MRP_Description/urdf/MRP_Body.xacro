@@ -4,7 +4,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!--                PROPERTIES:                 -->
-    <xacro:property name='a' value='4'/>
+    <xacro:property name='a' value='6'/>
 
     <material name = "black">
         <color rgba = "0.1 0.1 0.1 1"/>
