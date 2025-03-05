@@ -4,6 +4,5 @@
     <!-- include the xacro files that contain our robot -->
     <xacro:include filename = "MRP_Testing_Body.xacro"/>
     <xacro:include filename = "MRP_Testing_Gazebo_Properties.xacro"/>
-    <xacro:include filename = "MRP_Testing_Gazebo_Control.xacro"/>
-
+    <xacro:include filename = "MRP_Testing_ROS2_Control.xacro"/>
 </robot>
