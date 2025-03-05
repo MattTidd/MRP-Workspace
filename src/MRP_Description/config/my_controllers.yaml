@@ -12,16 +12,16 @@ controller_manager:
             type: joint_state_broadcaster/JointStateBroadcaster
 
 diff_controller:
-    ros_parameters:
+    ros__parameters:
 
         publish_rate: 30.0
-
         base_frame_id: base_link
-        left_wheel_names: ['RLM_RLW_joint', 'FLM_FLW_joint']
-        right_wheel_names: ['RRM_RRW_joint', 'FRM_FRW_joint']
+
+        left_wheel_names: ['C_to_RLW_joint', 'C_to_FLW_joint']
+        right_wheel_names: ['C_to_RRW_joint', 'C_to_FRW_joint']
 
         wheel_separation: 0.288
+        wheels_per_side: 2
         wheel_radius: 0.0925
 
         use_stamped_vel: false
-        
