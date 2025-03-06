@@ -1,27 +1,20 @@
 controller_manager:
-    ros__parameters:
-        update_rate: 30
-        use_sim_time: true
+  ros__parameters:
+    update_rate: 100  
 
-        # diff drive controller:
-        diff_controller:
-            type: diff_drive_controller/DiffDriveController
-        
-        # joint state controller:
-        joint_broad:
-            type: joint_state_broadcaster/JointStateBroadcaster
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
 
-diff_controller:
-    ros__parameters:
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
 
-        publish_rate: 30.0
-        base_frame_id: base_link
-
-        left_wheel_names: ['C_to_RLW_joint', 'C_to_FLW_joint']
-        right_wheel_names: ['C_to_RRW_joint', 'C_to_FRW_joint']
-
-        wheel_separation: 0.288
-        wheels_per_side: 2
-        wheel_radius: 0.0925
-
-        use_stamped_vel: false
+diff_drive_controller:
+  ros__parameters:
+    left_wheel_names: ["rear_left_wheel_joint", "front_left_wheel_joint"]
+    right_wheel_names: ["rear_right_wheel_joint", "front_right_wheel_joint"]
+    wheel_separation: 0.288  
+    wheel_radius: 0.0925     
+    wheels_per_side: 2
+    odom_frame_id: odom
+    base_frame_id: base_link
+    publish_rate: 50.0
