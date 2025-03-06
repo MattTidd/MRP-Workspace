@@ -1,9 +1,20 @@
 <?xml version="1.0"?>
-<robot name='MRP.urdf' xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name='MRP' xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:arg name='use_ros2_control' default='true'/>
 
     <!-- include the xacro files that contain our robot -->
-    <xacro:include filename="MRP_Body.xacro"/>
-    <xacro:include filename="MRP_Gazebo_Properties.xacro"/>
-    <xacro:include filename="MRP_Gazebo_Control.xacro"/>
+    <xacro:include filename = "MRP_Body.xacro"/>
+    <xacro:include filename = "MRP_Gazebo_Properties.xacro"/>
+
+    <!-- if we want to use ros2 control: -->
+    <xacro:if value ="$(arg use_ros2_control)">
+        <xacro:include filename = "MRP_Control.xacro"/>
+    </xacro:if>
+
+    <!-- if we want to use gazebo control: -->
+    <xacro:unless value = "$(arg use_ros2_control)">
+        <xacro:include filename = "MRP_Gazebo_Control.xacro"/>
+    </xacro:unless>
 
 </robot>

@@ -2,33 +2,12 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!--                PROPERTIES:                 -->
-    <xacro:property name = 'mu1' value = '1.5'/>
-    <xacro:property name = 'mu2' value = '1.5'/>
+    <xacro:property name = 'mu1' value = '10'/>
+    <xacro:property name = 'mu2' value = '10'/>
 
     <!--                STRUCTURAL LINKS:                 -->
     <gazebo reference = 'chassis_link'>
         <material>Gazebo/Black</material>
-    </gazebo>
-    
-    <gazebo reference = 'pendulum_bracket_link'>
-        <material>Gazebo/Black</material>
-    </gazebo>
-
-    <!--                MOTORS:                 -->
-    <gazebo reference = 'rear_left_motor'>
-        <material>Gazebo/Red</material>
-    </gazebo>
-
-    <gazebo reference = 'rear_right_motor'>
-        <material>Gazebo/Red</material>
-    </gazebo>
-
-    <gazebo reference = 'front_left_motor'>
-        <material>Gazebo/Red</material>
-    </gazebo>
-
-    <gazebo reference = 'front_right_motor'>
-        <material>Gazebo/Red</material>
     </gazebo>
 
     <!--                WHEELS:                 -->
@@ -54,5 +33,5 @@
         <material>Gazebo/Grey</material>
         <mu1 value="${mu1}" />
         <mu2 value="${mu2}" />
-    </gazebo>
+    </gazebo>s
 </robot>
