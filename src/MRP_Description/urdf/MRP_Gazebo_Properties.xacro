@@ -33,5 +33,5 @@
         <material>Gazebo/Grey</material>
         <mu1 value="${mu1}" />
         <mu2 value="${mu2}" />
-    </gazebo>s
+    </gazebo>
 </robot>
