@@ -62,8 +62,5 @@ def generate_launch_description():
         gazebo, 
         robot_state_publisher,
         spawn_entity,
-        # ros2_control_node,
-        # load_joint_state_broadcaster,
-        # load_diff_drive_controller
     ])
 

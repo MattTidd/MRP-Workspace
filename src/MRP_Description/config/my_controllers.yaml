@@ -18,3 +18,4 @@ diff_drive_controller:
     odom_frame_id: odom
     base_frame_id: base_link
     publish_rate: 50.0
+
