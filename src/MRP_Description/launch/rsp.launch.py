@@ -46,8 +46,10 @@ def generate_launch_description():
     
     # prepare the URDF file:
     pkg_path = os.path.join(get_package_share_directory('MRP_Description'))
+    # xacro_file = os.path.join(pkg_path, 'urdf', 'test_diff_drive.xacro.urdf')
     xacro_file = os.path.join(pkg_path, 'urdf', 'MRP.urdf.xacro')
     robot_description_config = Command(['xacro ', xacro_file, ' use_ros2_control:=', use_ros2_control])
+    # robot_description_config = Command(['xacro ', xacro_file])
     params = {'robot_description': ParameterValue(robot_description_config, value_type = str), 'use_sim_time': use_sim_time}
 
     # create a robot_state_publisher node
