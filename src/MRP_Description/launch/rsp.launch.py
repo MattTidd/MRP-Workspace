@@ -16,16 +16,34 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, LogInfo
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 import xacro
 
 def generate_launch_description():
-    # launch parameters:
+    # launch configurations:
     use_sim_time = LaunchConfiguration('use_sim_time')
     use_ros2_control = LaunchConfiguration('use_ros2_control')
 
+    # launch arguments:
+    use_sim_time_arg = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true',
+        description='Use sim time if true')
+    
+    use_ros2_control_arg = DeclareLaunchArgument(
+        'use_ros2_control',
+        default_value='true',
+        description='Use ros2_control if true')
+    
+    # log these arguments:
+    arg_log = LogInfo(
+        condition = None, 
+        msg = ['use_sim_time: ', LaunchConfiguration('use_sim_time'),
+               ' | use_ros2_control: ', LaunchConfiguration('use_ros2_control')]
+    )
+    
     # prepare the URDF file:
     pkg_path = os.path.join(get_package_share_directory('MRP_Description'))
     xacro_file = os.path.join(pkg_path, 'urdf', 'MRP.urdf.xacro')
@@ -42,15 +60,8 @@ def generate_launch_description():
 
     # launch:
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='true',
-            description='Use sim time if true'),
-
-        DeclareLaunchArgument(
-            'use_ros2_control',
-            default_value='true',
-            description='Use ros2_control if true'),
-
+        use_sim_time_arg, 
+        use_ros2_control_arg, 
+        arg_log, 
         robot_state_publisher
     ])
