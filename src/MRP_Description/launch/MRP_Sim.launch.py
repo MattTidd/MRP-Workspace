@@ -48,6 +48,20 @@ def generate_launch_description():
                                    '-entity', 'MRP'],
                         output='screen')
     
+    # spawn the diff_drive controller:
+    diff_drive_spawner = Node(
+        package = 'controller_manager',
+        executable = 'spawner',
+        arguments = ['diff_drive_controller']
+    )
+
+    # spawn the joint broadcaster:
+    joint_broadcaster_spawner = Node(
+        package = 'controller_manager',
+        executable = 'spawner',
+        arguments = ['joint_state_broadcaster']
+    )
+    
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
@@ -62,5 +76,7 @@ def generate_launch_description():
         gazebo, 
         robot_state_publisher,
         spawn_entity,
+        diff_drive_spawner,
+        joint_broadcaster_spawner
     ])
 
