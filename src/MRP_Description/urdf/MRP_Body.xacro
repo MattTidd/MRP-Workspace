@@ -80,7 +80,8 @@
         <collision>
             <origin xyz = "0 0 0.01" rpy = "0 0 0"/>
             <geometry>
-                <cylinder length = '0.02' radius = '0.0925'/>
+                <!-- <cylinder length = '0.02' radius = '0.0925'/> -->
+                <sphere radius = '0.0925'/>
             </geometry>
         </collision>
 
@@ -118,7 +119,8 @@
         <collision>
             <origin xyz = "0 0 0.01" rpy = "0 0 0"/>
             <geometry>
-                <cylinder length = '0.02' radius = '0.0925'/>
+                <!-- <cylinder length = '0.02' radius = '0.0925'/> -->
+                <sphere radius = '0.0925'/>
             </geometry>
         </collision>
 
@@ -156,7 +158,8 @@
         <collision>
             <origin xyz = "0 0 0.01" rpy = "0 0 0"/>
             <geometry>
-                <cylinder length = '0.02' radius = '0.0925'/>
+                <!-- <cylinder length = '0.02' radius = '0.0925'/> -->
+                <sphere radius = '0.0925'/>
             </geometry>
         </collision>
 
@@ -194,7 +197,8 @@
         <collision>
             <origin xyz = "0 0 0.01" rpy = "0 0 0"/>
             <geometry>
-                <cylinder length = '0.02' radius = '0.0925'/>
+                <!-- <cylinder length = '0.02' radius = '0.0925'/> -->
+                <sphere radius = '0.0925'/>
             </geometry>
         </collision>
 
