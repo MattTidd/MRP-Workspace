@@ -27,7 +27,7 @@ def generate_launch_description():
     # launch arguments:
     use_sim_time = LaunchConfiguration('use_sim_time')
     use_ros2_control = LaunchConfiguration('use_ros2_control')
-    pkg_path = os.path.join(get_package_share_directory('MRP_Description'))
+    gazebo_params_path = os.path.join(get_package_share_directory('MRP_Description'), 'config', 'gazebo_params.yaml')
 
     robot_state_publisher = IncludeLaunchDescription(PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('MRP_Description'),'launch','rsp.launch.py'
@@ -39,7 +39,7 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-                    # launch_arguments = {'extra_gazebo_args': '--verbose'}.items()-
+                    launch_arguments = {'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path}.items()
              )
  
     # spawner node:
