@@ -4,7 +4,7 @@
     <!--                PROPERTIES                 -->
     <xacro:property name = 'a' value = '1'/>
     <xacro:property name = 'b' value = '4'/>
-    <xacro:property name = 'd' value = '0.2'/>
+    <xacro:property name = 'd' value = '0.02'/>
 
     <material name = "black">
         <color rgba = "0.1 0.1 0.1 1"/>
