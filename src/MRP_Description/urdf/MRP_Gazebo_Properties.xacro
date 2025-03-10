@@ -2,8 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!--                PROPERTIES                 -->
-    <xacro:property name = 'mu1' value = '10'/>
-    <xacro:property name = 'mu2' value = '10'/>
+    <xacro:property name = 'mu1' value = '0.2'/>
+    <xacro:property name = 'mu2' value = '0.2'/>
 
     <!--                STRUCTURAL LINKS                 -->
     <gazebo reference = 'chassis_link'>
