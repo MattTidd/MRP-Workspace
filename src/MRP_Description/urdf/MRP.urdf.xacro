@@ -7,12 +7,12 @@
     <xacro:include filename = "MRP_Body.xacro"/>
     <xacro:include filename = "MRP_Gazebo_Properties.xacro"/>
 
-    <!-- if we want to use ros2 control: -->
+    <!-- if we want to use ros2 control -->
     <xacro:if value ="$(arg use_ros2_control)">
         <xacro:include filename = "MRP_Control.xacro"/>
     </xacro:if>
 
-    <!-- if we want to use gazebo control: -->
+    <!-- if we want to use gazebo control -->
     <xacro:unless value = "$(arg use_ros2_control)">
         <xacro:include filename = "MRP_Gazebo_Control.xacro"/>
     </xacro:unless>

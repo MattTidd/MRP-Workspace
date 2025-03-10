@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!--                PROPERTIES:                 -->
+    <!--                PROPERTIES                 -->
     <xacro:property name = 'mu1' value = '10'/>
     <xacro:property name = 'mu2' value = '10'/>
 
-    <!--                STRUCTURAL LINKS:                 -->
+    <!--                STRUCTURAL LINKS                 -->
     <gazebo reference = 'chassis_link'>
         <material>Gazebo/Black</material>
     </gazebo>
 
-    <!--                WHEELS:                 -->
+    <!--                WHEELS                 -->
     <gazebo reference = 'rear_left_wheel'>
         <material>Gazebo/Grey</material>
         <mu1 value="${mu1}" />

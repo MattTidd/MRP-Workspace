@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!--                PROPERTIES:                 -->
+    <!--                PROPERTIES                 -->
     <xacro:property name = 'a' value = '1'/>
     <xacro:property name = 'b' value = '4'/>
     <xacro:property name = 'd' value = '0.2'/>
