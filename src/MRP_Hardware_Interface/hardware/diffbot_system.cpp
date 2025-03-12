@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ros2_control_demo_example_2/diffbot_system.hpp"
+#include "MRP_Hardware_Interface/diffbot_system.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -27,7 +27,7 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-namespace ros2_control_demo_example_2
+namespace MRP_Hardware_Interface
 {
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
   const hardware_interface::HardwareInfo & info)
@@ -38,23 +38,29 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
   {
     return hardware_interface::CallbackReturn::ERROR;
   }
-  logger_ = std::make_shared<rclcpp::Logger>(
-    rclcpp::get_logger("controller_manager.resource_manager.hardware_component.system.DiffBot"));
-  clock_ = std::make_shared<rclcpp::Clock>(rclcpp::Clock());
 
-  // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-  hw_start_sec_ =
-    hardware_interface::stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
-  hw_stop_sec_ =
-    hardware_interface::stod(info_.hardware_parameters["example_param_hw_stop_duration_sec"]);
-  // END: This part here is for exemplary purposes - Please do not copy to your production code
-  hw_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+  // assign parameters to the config structure:
+  cfg_.front_left_wheel_name = info_.hardware_parameters["front_left_wheel_name"];
+  cfg_.front_right_wheel_name = info_.hardware_parameters["front_right_wheel_name"];
+  cfg_.rear_left_wheel_name = info_.hardware_parameters["rear_left_wheel_name"];
+  cfg_.rear_right_wheel_name = info_.hardware_parameters["rear_right_wheel_name"];
 
+  cfg_.loop_rate = std::stof(info_.hardware_parameters["loop_rate"]);
+  cfg_.device = info_.hardware_parameters["device"];
+  cfg_.baud_rate = std::stoi(info_.hardware_parameters["baud_rate"]);
+  cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout"]);
+  cfg_.enc_counts_per_rev = std::stoi(info_.hardware_parameters["enc_counts_per_rev"]);
+
+  // set up the wheels:
+  wheel_f_l_.setup(cfg_.front_left_wheel_name, cfg_.enc_counts_per_rev);
+  wheel_f_r_.setup(cfg_.front_right_wheel_name, cfg_.enc_counts_per_rev);
+  wheel_r_l_.setup(cfg_.rear_left_wheel_name, cfg_.enc_counts_per_rev);
+  wheel_r_r_.setup(cfg_.rear_right_wheel_name, cfg_.enc_counts_per_rev);
+
+//----------------------  INTERFACE CHECKING  ----------------------//
   for (const hardware_interface::ComponentInfo & joint : info_.joints)
   {
-    // DiffBotSystem has exactly two states and one command interface on each joint
+    // check that there is exactly one command interface:
     if (joint.command_interfaces.size() != 1)
     {
       RCLCPP_FATAL(
@@ -63,6 +69,7 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
       return hardware_interface::CallbackReturn::ERROR;
     }
 
+    // check that the command interface is indeed a velocity interface:
     if (joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
     {
       RCLCPP_FATAL(
@@ -72,6 +79,7 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
       return hardware_interface::CallbackReturn::ERROR;
     }
 
+    // check that there are exactly two state interfaces:
     if (joint.state_interfaces.size() != 2)
     {
       RCLCPP_FATAL(
@@ -80,6 +88,7 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
       return hardware_interface::CallbackReturn::ERROR;
     }
 
+    // check that there is a position state interface:
     if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
     {
       RCLCPP_FATAL(
@@ -89,6 +98,7 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
       return hardware_interface::CallbackReturn::ERROR;
     }
 
+    // check that there is a velocity state interface:
     if (joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
     {
       RCLCPP_FATAL(
@@ -99,129 +109,145 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
     }
   }
 
+  // return successful if checks passed
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
+//---------------------- EXPORT STATE INTERFACES ----------------------//
 std::vector<hardware_interface::StateInterface> DiffBotSystemHardware::export_state_interfaces()
 {
+  // declare state interface vector:
   std::vector<hardware_interface::StateInterface> state_interfaces;
-  for (auto i = 0u; i < info_.joints.size(); i++)
-  {
-    state_interfaces.emplace_back(hardware_interface::StateInterface(
-      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_positions_[i]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(
-      info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_velocities_[i]));
-  }
+
+  // add front left wheel state interfaces:
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_f_l_.name, hardware_interface::HW_IF_POSITION, &wheel_f_l_.pos));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_f_l_.name, hardware_interface::HW_IF_VELOCITY, &wheel_f_l_.vel));
+
+  // add front right wheel state interfaces:
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_f_r_.name, hardware_interface::HW_IF_POSITION, &wheel_f_r_.pos));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_f_r_.name, hardware_interface::HW_IF_VELOCITY, &wheel_f_r_.vel));
+
+  // add rear left wheel state interfaces:
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_r_l_.name, hardware_interface::HW_IF_POSITION, &wheel_r_l_.pos));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_r_l_.name, hardware_interface::HW_IF_VELOCITY, &wheel_r_l_.vel));
+
+  // add rear right wheel state interfaces:
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_r_r_.name, hardware_interface::HW_IF_POSITION, &wheel_r_r_.pos));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(
+    wheel_r_r_.name, hardware_interface::HW_IF_VELOCITY, &wheel_r_r_.vel));
 
   return state_interfaces;
 }
 
+//---------------------- EXPORT COMMAND INTERFACES ----------------------//
 std::vector<hardware_interface::CommandInterface> DiffBotSystemHardware::export_command_interfaces()
 {
+  // declare command interface vector:
   std::vector<hardware_interface::CommandInterface> command_interfaces;
-  for (auto i = 0u; i < info_.joints.size(); i++)
-  {
-    command_interfaces.emplace_back(hardware_interface::CommandInterface(
-      info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_commands_[i]));
-  }
+
+  // add front left wheel command interface:
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(
+    wheel_f_l_.name, hardware_interface::HW_IF_VELOCITY, &wheel_f_l_.cmd));
+
+  // add front right wheel command interface:
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(
+    wheel_f_r_.name, hardware_interface::HW_IF_VELOCITY, &wheel_f_r_.cmd));
+
+  // add rear left wheel command interface:
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(
+    wheel_r_l_.name, hardware_interface::HW_IF_VELOCITY, &wheel_r_l_.cmd));
+
+  // add rear right wheel command interface:
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(
+    wheel_r_r_.name, hardware_interface::HW_IF_VELOCITY, &wheel_r_r_.cmd));
 
   return command_interfaces;
 }
 
+//---------------------- ACTIVATION ----------------------//
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_activate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
   RCLCPP_INFO(get_logger(), "Activating ...please wait...");
-
-  for (auto i = 0; i < hw_start_sec_; i++)
-  {
-    rclcpp::sleep_for(std::chrono::seconds(1));
-    RCLCPP_INFO(get_logger(), "%.1f seconds left...", hw_start_sec_ - i);
-  }
-  // END: This part here is for exemplary purposes - Please do not copy to your production code
-
-  // set some default values
-  for (auto i = 0u; i < hw_positions_.size(); i++)
-  {
-    if (std::isnan(hw_positions_[i]))
-    {
-      hw_positions_[i] = 0;
-      hw_velocities_[i] = 0;
-      hw_commands_[i] = 0;
-    }
-  }
-
+  comms_.connect(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
   RCLCPP_INFO(get_logger(), "Successfully activated!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
+//---------------------- DEACTIVATION ----------------------//
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_deactivate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
   RCLCPP_INFO(get_logger(), "Deactivating ...please wait...");
-
-  for (auto i = 0; i < hw_stop_sec_; i++)
-  {
-    rclcpp::sleep_for(std::chrono::seconds(1));
-    RCLCPP_INFO(get_logger(), "%.1f seconds left...", hw_stop_sec_ - i);
-  }
-  // END: This part here is for exemplary purposes - Please do not copy to your production code
-
+  comms_.disconnect();
   RCLCPP_INFO(get_logger(), "Successfully deactivated!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
+//---------------------- READ FUNCTION ----------------------//
 hardware_interface::return_type DiffBotSystemHardware::read(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
 {
-  // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-  std::stringstream ss;
-  ss << "Reading states:";
-  for (std::size_t i = 0; i < hw_velocities_.size(); i++)
-  {
-    // Simulate DiffBot wheels's movement as a first-order system
-    // Update the joint status: this is a revolute joint without any limit.
-    // Simply integrates
-    hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
+  double delta_seconds = period.seconds();
+  comms_.read_encoder_values(wheel_f_l_.enc, wheel_f_r_.enc, wheel_r_l_.enc, wheel_r_r_.enc);
 
-    ss << std::fixed << std::setprecision(2) << std::endl
-       << "\t"
-          "position "
-       << hw_positions_[i] << " and velocity " << hw_velocities_[i] << " for '"
-       << info_.joints[i].name.c_str() << "'!";
-  }
-  RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
-  // END: This part here is for exemplary purposes - Please do not copy to your production code
+  // get the position & velocity values for the front left wheel:
+  double pos_prev = wheel_f_l_.pos;
+  wheel_f_l_.pos = wheel_f_l_.calc_enc_angle();
+  wheel_f_l_.vel = (wheel_f_l_.pos - pos_prev) / delta_seconds;
+
+  // get the position & velocity values for the front right wheel:
+  pos_prev = wheel_f_r_.pos;
+  wheel_f_r_.pos = wheel_f_r_.calc_enc_angle();
+  wheel_f_r_.vel = (wheel_f_r_.pos - pos_prev) / delta_seconds;
+
+  // get the position & velocity values for the rear left wheel:
+  pos_prev = wheel_r_l_.pos;
+  wheel_r_l_.pos = wheel_r_l_.calc_enc_angle();
+  wheel_r_l_.vel = (wheel_r_l_.pos - pos_prev) / delta_seconds;
+
+  // get the position & velocity values for the rear right wheel:
+  pos_prev = wheel_r_r_.pos;
+  wheel_r_r_.pos = wheel_r_r_.calc_enc_angle();
+  wheel_r_r_.vel = (wheel_r_r_.pos - pos_prev) / delta_seconds;
 
   return hardware_interface::return_type::OK;
 }
 
-hardware_interface::return_type ros2_control_demo_example_2 ::DiffBotSystemHardware::write(
+//---------------------- WRITE FUNCTION ----------------------//
+hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::write(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
-  // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-  std::stringstream ss;
-  ss << "Writing commands:";
-  for (auto i = 0u; i < hw_commands_.size(); i++)
-  {
-    // Simulate sending commands to the hardware
-    hw_velocities_[i] = hw_commands_[i];
+  // counts per loop for each motor:
+  int motor_f_l_counts_per_loop = wheel_f_l_.cmd / wheel_f_l_.rads_per_count / cfg_.loop_rate;
+  int motor_f_r_counts_per_loop = wheel_f_r_.cmd / wheel_f_r_.rads_per_count / cfg_.loop_rate;
+  int motor_r_l_counts_per_loop = wheel_r_l_.cmd / wheel_r_l_.rads_per_count / cfg_.loop_rate;
+  int motor_r_r_counts_per_loop = wheel_r_r_.cmd / wheel_r_r_.rads_per_count / cfg_.loop_rate;
 
-    ss << std::fixed << std::setprecision(2) << std::endl
-       << "\t" << "command " << hw_commands_[i] << " for '" << info_.joints[i].name.c_str() << "'!";
-  }
-  RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
-  // END: This part here is for exemplary purposes - Please do not copy to your production code
+  // tell arduino to set the values:
+  comms_.set_motor_values(
+    motor_f_l_counts_per_loop,
+    motor_f_r_counts_per_loop,
+    motor_r_l_counts_per_loop,
+    motor_r_r_counts_per_loop
+  );
 
   return hardware_interface::return_type::OK;
 }
 
 }  // namespace ros2_control_demo_example_2
 
+// export to the plugin:
+
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(
-  ros2_control_demo_example_2::DiffBotSystemHardware, hardware_interface::SystemInterface)
+  MRP_Hardware_Interface::DiffBotSystemHardware, hardware_interface::SystemInterface)

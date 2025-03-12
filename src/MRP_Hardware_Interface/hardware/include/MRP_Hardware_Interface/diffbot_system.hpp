@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS2_CONTROL_DEMO_EXAMPLE_2__DIFFBOT_SYSTEM_HPP_
-#define ROS2_CONTROL_DEMO_EXAMPLE_2__DIFFBOT_SYSTEM_HPP_
+#ifndef MRP_HARDWARE_INTERFACE__DIFFBOT_SYSTEM_HPP_
+#define MRP_HARDWARE_INTERFACE__DIFFBOT_SYSTEM_HPP_
 
 #include <memory>
 #include <string>
@@ -30,11 +30,29 @@
 #include "rclcpp/time.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
+#include "MRP_Hardware_Interface/arduino_comms.h"
+#include "MRP_Hardware_Interface/wheel.hpp"
 
-namespace ros2_control_demo_example_2
+namespace MRP_Hardware_Interface
 {
 class DiffBotSystemHardware : public hardware_interface::SystemInterface
 {
+
+struct Config
+{
+  std::string front_left_wheel_name = "";
+  std::string front_right_wheel_name = "";
+  std::string rear_left_wheel_name = "";
+  std::string rear_right_wheel_name = "";
+
+  float loop_rate = 0.0;
+  std::string device = "";
+  int baud_rate = 0;
+  int timeout_ms = 0;
+  int enc_counts_per_rev = 0;
+};
+
+
 public:
   RCLCPP_SHARED_PTR_DEFINITIONS(DiffBotSystemHardware);
 
@@ -44,6 +62,8 @@ public:
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
   std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+
+  // these are the transition functions that are used:
 
   hardware_interface::CallbackReturn on_activate(
     const rclcpp_lifecycle::State & previous_state) override;
@@ -70,18 +90,20 @@ public:
   rclcpp::Clock::SharedPtr get_clock() const { return clock_; }
 
 private:
-  // Parameters for the DiffBot simulation
-  double hw_start_sec_;
-  double hw_stop_sec_;
+  // create an arduino comms object that handles the communication to and from the arduino:
+  ArduinoComms comms_;
 
-  // Objects for logging
+  // create an instance of the config:
+  Config cfg_;  
+
+  // create instances of the wheels:
+  Wheel wheel_f_l_;
+  Wheel wheel_f_r_;
+  Wheel wheel_r_l_;
+  Wheel wheel_r_r_;
+  
   std::shared_ptr<rclcpp::Logger> logger_;
   rclcpp::Clock::SharedPtr clock_;
-
-  // Store the command for the simulated robot
-  std::vector<double> hw_commands_;
-  std::vector<double> hw_positions_;
-  std::vector<double> hw_velocities_;
 };
 
 }  // namespace ros2_control_demo_example_2
