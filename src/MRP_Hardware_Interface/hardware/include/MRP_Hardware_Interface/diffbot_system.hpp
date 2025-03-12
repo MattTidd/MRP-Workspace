@@ -77,18 +77,6 @@ public:
   hardware_interface::return_type write(
     const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
-  /// Get the logger of the SystemInterface.
-  /**
-   * \return logger of the SystemInterface.
-   */
-  rclcpp::Logger get_logger() const { return *logger_; }
-
-  /// Get the clock of the SystemInterface.
-  /**
-   * \return clock of the SystemInterface.
-   */
-  rclcpp::Clock::SharedPtr get_clock() const { return clock_; }
-
 private:
   // create an arduino comms object that handles the communication to and from the arduino:
   ArduinoComms comms_;
@@ -102,8 +90,6 @@ private:
   Wheel wheel_r_l_;
   Wheel wheel_r_r_;
   
-  std::shared_ptr<rclcpp::Logger> logger_;
-  rclcpp::Clock::SharedPtr clock_;
 };
 
 }  // namespace ros2_control_demo_example_2

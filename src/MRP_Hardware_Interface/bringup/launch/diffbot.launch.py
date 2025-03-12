@@ -39,6 +39,7 @@ def generate_launch_description():
     robot_controllers = PathJoinSubstitution(
         [
             FindPackageShare("MRP_Hardware_Interface"),
+            "bringup",
             "config",
             "diffbot_controllers.yaml",
         ]
@@ -72,13 +73,13 @@ def generate_launch_description():
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=["joint_state_broadcaster"],
     )
 
     robot_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["diff_drive_controller", "--controller-manager", "/controller_manager"],
+        arguments=["diff_drive_controller"],
     )
 
     # Delay rviz start after `joint_state_broadcaster`

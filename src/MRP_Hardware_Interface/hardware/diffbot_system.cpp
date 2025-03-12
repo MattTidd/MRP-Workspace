@@ -40,6 +40,7 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
   }
 
   // assign parameters to the config structure:
+
   cfg_.front_left_wheel_name = info_.hardware_parameters["front_left_wheel_name"];
   cfg_.front_right_wheel_name = info_.hardware_parameters["front_right_wheel_name"];
   cfg_.rear_left_wheel_name = info_.hardware_parameters["rear_left_wheel_name"];
@@ -48,7 +49,7 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
   cfg_.loop_rate = std::stof(info_.hardware_parameters["loop_rate"]);
   cfg_.device = info_.hardware_parameters["device"];
   cfg_.baud_rate = std::stoi(info_.hardware_parameters["baud_rate"]);
-  cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout"]);
+  cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout_ms"]);
   cfg_.enc_counts_per_rev = std::stoi(info_.hardware_parameters["enc_counts_per_rev"]);
 
   // set up the wheels:
@@ -64,8 +65,9 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
     if (joint.command_interfaces.size() != 1)
     {
       RCLCPP_FATAL(
-        get_logger(), "Joint '%s' has %zu command interfaces found. 1 expected.",
-        joint.name.c_str(), joint.command_interfaces.size());
+        rclcpp::get_logger("DiffBotSystemHardware"),
+        "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
+        joint.command_interfaces.size());
       return hardware_interface::CallbackReturn::ERROR;
     }
 
@@ -73,9 +75,9 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
     if (joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
     {
       RCLCPP_FATAL(
-        get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
-        joint.name.c_str(), joint.command_interfaces[0].name.c_str(),
-        hardware_interface::HW_IF_VELOCITY);
+        rclcpp::get_logger("DiffBotSystemHardware"),
+        "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c_str(),
+        joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_VELOCITY);
       return hardware_interface::CallbackReturn::ERROR;
     }
 
@@ -83,7 +85,8 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
     if (joint.state_interfaces.size() != 2)
     {
       RCLCPP_FATAL(
-        get_logger(), "Joint '%s' has %zu state interface. 2 expected.", joint.name.c_str(),
+        rclcpp::get_logger("DiffBotSystemHardware"),
+        "Joint '%s' has %zu state interface. 2 expected.", joint.name.c_str(),
         joint.state_interfaces.size());
       return hardware_interface::CallbackReturn::ERROR;
     }
@@ -92,9 +95,9 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
     if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
     {
       RCLCPP_FATAL(
-        get_logger(), "Joint '%s' have '%s' as first state interface. '%s' expected.",
-        joint.name.c_str(), joint.state_interfaces[0].name.c_str(),
-        hardware_interface::HW_IF_POSITION);
+        rclcpp::get_logger("DiffBotSystemHardware"),
+        "Joint '%s' have '%s' as first state interface. '%s' expected.", joint.name.c_str(),
+        joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
       return hardware_interface::CallbackReturn::ERROR;
     }
 
@@ -102,9 +105,9 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_init(
     if (joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
     {
       RCLCPP_FATAL(
-        get_logger(), "Joint '%s' have '%s' as second state interface. '%s' expected.",
-        joint.name.c_str(), joint.state_interfaces[1].name.c_str(),
-        hardware_interface::HW_IF_VELOCITY);
+        rclcpp::get_logger("DiffBotSystemHardware"),
+        "Joint '%s' have '%s' as second state interface. '%s' expected.", joint.name.c_str(),
+        joint.state_interfaces[1].name.c_str(), hardware_interface::HW_IF_VELOCITY);
       return hardware_interface::CallbackReturn::ERROR;
     }
   }
@@ -175,9 +178,9 @@ std::vector<hardware_interface::CommandInterface> DiffBotSystemHardware::export_
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_activate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(get_logger(), "Activating ...please wait...");
+  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Activating ...please wait...");
   comms_.connect(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
-  RCLCPP_INFO(get_logger(), "Successfully activated!");
+  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Successfully activated!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
@@ -186,9 +189,9 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_activate(
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_deactivate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(get_logger(), "Deactivating ...please wait...");
+  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Deactivating ...please wait...");
   comms_.disconnect();
-  RCLCPP_INFO(get_logger(), "Successfully deactivated!");
+  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Successfully deactivated!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }

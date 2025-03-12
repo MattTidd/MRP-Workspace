@@ -46,17 +46,10 @@ pluginlib_export_plugin_description_file(hardware_interface MRP_Hardware_Interfa
 
 # INSTALL
 install(
-  DIRECTORY hardware/include/
-  DESTINATION include/MRP_Hardware_Interface
+  DIRECTORY bringup description hardware    # these are the directories I need
+  DESTINATION share/${PROJECT_NAME}         # this is the destination 
 )
-install(
-  DIRECTORY description/meshes description/ros2_control description/urdf
-  DESTINATION share/MRP_Hardware_Interface
-)
-install(
-  DIRECTORY bringup/launch bringup/config
-  DESTINATION share/MRP_Hardware_Interface
-)
+
 install(TARGETS MRP_Hardware_Interface
   EXPORT export_MRP_Hardware_Interface
   ARCHIVE DESTINATION lib
