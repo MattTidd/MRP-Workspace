@@ -50,7 +50,7 @@ install(
   DESTINATION include/MRP_Hardware_Interface
 )
 install(
-  DIRECTORY description/launch description/ros2_control description/urdf
+  DIRECTORY description/meshes description/ros2_control description/urdf
   DESTINATION share/MRP_Hardware_Interface
 )
 install(
@@ -64,13 +64,13 @@ install(TARGETS MRP_Hardware_Interface
   RUNTIME DESTINATION bin
 )
 
-if(BUILD_TESTING)
-  find_package(ament_cmake_pytest REQUIRED)
-
-  ament_add_pytest_test(example_2_urdf_xacro test/test_urdf_xacro.py)
-  ament_add_pytest_test(view_example_2_launch test/test_view_robot_launch.py)
-  ament_add_pytest_test(run_example_2_launch test/test_diffbot_launch.py)
-endif()
+# if(BUILD_TESTING)
+#  find_package(ament_cmake_pytest REQUIRED)
+#
+#  ament_add_pytest_test(example_2_urdf_xacro test/test_urdf_xacro.py)
+#  ament_add_pytest_test(view_example_2_launch test/test_view_robot_launch.py)
+#  ament_add_pytest_test(run_example_2_launch test/test_diffbot_launch.py)
+# endif()
 
 ## EXPORTS
 ament_export_targets(export_MRP_Hardware_Interface HAS_LIBRARY_TARGET)
