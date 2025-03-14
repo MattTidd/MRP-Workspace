@@ -2,3 +2,9 @@ build/
 log/
 log/latest_build
 install/
+install/local_setup.sh
+install/setup.bash
+install/setup.ps1
+install/setup.sh
+install/setup.zsh
+log/latest_build
