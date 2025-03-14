@@ -22,6 +22,7 @@
 #include <memory>
 #include <sstream>
 #include <vector>
+#include <rcutils/logging.h>
 
 #include "hardware_interface/lexical_casts.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
@@ -191,7 +192,7 @@ std::vector<hardware_interface::CommandInterface> DiffBotSystemHardware::export_
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_configure(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(rclcpp::get_logger("DiffDriveArduinoHardware"), "Configuring ...please wait...");
+  RCLCPP_INFO(rclcpp::get_logger("DiffDriveArduinoHardware"), "Configuring, please wait...");
   if (comms_.connected())
   {
     comms_.disconnect();
@@ -206,7 +207,7 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_configure(
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_cleanup(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(rclcpp::get_logger("DiffDriveArduinoHardware"), "Cleaning up ...please wait...");
+  RCLCPP_INFO(rclcpp::get_logger("DiffDriveArduinoHardware"), "Cleaning up, please wait...");
   if (comms_.connected())
   {
     comms_.disconnect();
@@ -220,14 +221,19 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_cleanup(
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_activate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Activating ...please wait...");
-  comms_.connect(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
+  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Activating, please wait...");
+  if (!comms_.connected())
+  {
+    return hardware_interface::CallbackReturn::ERROR;
+  }
+  // comms_.connect(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
   if (cfg_.pid_p > 0)
   {
+    RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Setting PID values, please wait...");
     comms_.set_pid_values(cfg_.pid_p,cfg_.pid_d,cfg_.pid_i,cfg_.pid_o);
+    RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Successfully set PID values!");
   }
   RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Successfully activated!");
-
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -235,8 +241,8 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_activate(
 hardware_interface::CallbackReturn DiffBotSystemHardware::on_deactivate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Deactivating ...please wait...");
-  comms_.disconnect();
+  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Deactivating, please wait...");
+  // comms_.disconnect();
   RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Successfully deactivated!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
@@ -246,14 +252,35 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_deactivate(
 hardware_interface::return_type DiffBotSystemHardware::read(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
 {
+  if (!comms_.connected())
+  {
+    return hardware_interface::return_type::ERROR;
+  }
+
   double delta_seconds = period.seconds();
   comms_.read_encoder_values(wheel_f_l_.enc, wheel_f_r_.enc, wheel_r_l_.enc, wheel_r_r_.enc);
 
-  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Encoder read: ", 
-  "FL: ", wheel_f_l_.enc, 
-  "FR: ", wheel_f_r_.enc, 
-  "RL: ", wheel_r_l_.enc, 
-  "RR: " wheel_r_r_.enc);
+  // printf("\rEncoder read: FL: %d, FR: %d, RL: %d, RR: %d   ", 
+  //   wheel_f_l_.enc, wheel_f_r_.enc, wheel_r_l_.enc, wheel_r_r_.enc);
+  // fflush(stdout);
+
+  // RCUTILS_LOG_INFO_NAMED(
+  //   "DiffBotSystemHardware",
+  //   "Encoder read: FL: %d, FR: %d, RL: %d, RR: %d \r",
+  //   wheel_f_l_.enc,
+  //   wheel_f_r_.enc,
+  //   wheel_r_l_.enc,
+  //   wheel_r_r_.enc
+  // );
+
+  // // RCLCPP_INFO(
+  // //   rclcpp::get_logger("DiffBotSystemHardware"),
+  // //   "Encoder read: FL: %d, FR: %d, RL: %d, RR: %d",
+  // //   wheel_f_l_.enc,
+  // //   wheel_f_r_.enc,
+  // //   wheel_r_l_.enc,
+  // //   wheel_r_r_.enc
+  // // );
 
   // get the position & velocity values for the front left wheel:
   double pos_prev = wheel_f_l_.pos;
@@ -282,17 +309,25 @@ hardware_interface::return_type DiffBotSystemHardware::read(
 hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::write(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
+  if (!comms_.connected())
+  {
+    return hardware_interface::return_type::ERROR;
+  }
+
   // counts per loop for each motor:
   int motor_f_l_counts_per_loop = wheel_f_l_.cmd / wheel_f_l_.rads_per_count / cfg_.loop_rate;
   int motor_f_r_counts_per_loop = wheel_f_r_.cmd / wheel_f_r_.rads_per_count / cfg_.loop_rate;
   int motor_r_l_counts_per_loop = wheel_r_l_.cmd / wheel_r_l_.rads_per_count / cfg_.loop_rate;
   int motor_r_r_counts_per_loop = wheel_r_r_.cmd / wheel_r_r_.rads_per_count / cfg_.loop_rate;
 
-  RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Writing the following: ", 
-  "FL: ", motor_f_l_counts_per_loop, 
-  "FR: ", motor_f_r_counts_per_loop, 
-  "RL: ", motor_r_l_counts_per_loop,
-   "RR: " motor_r_l_counts_per_loop);
+  // RCUTILS_LOG_INFO_NAMED(
+  //   "DiffBotSystemHardware",
+  //   "Writing: FL: %d, FR: %d, RL: %d, RR: %d \r",
+  //   motor_f_l_counts_per_loop,
+  //   motor_f_r_counts_per_loop,
+  //   motor_r_l_counts_per_loop,
+  //   motor_r_r_counts_per_loop
+  // );
 
   // tell arduino to set the values:
   comms_.set_motor_values(
