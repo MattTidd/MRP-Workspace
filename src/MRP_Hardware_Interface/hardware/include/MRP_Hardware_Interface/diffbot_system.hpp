@@ -57,7 +57,7 @@ struct Config
   int pid_p = 0;
   int pid_i = 0;
   int pid_d = 0;
-  int pid_p = 0;
+  int pid_o = 0;
 };
 
 
