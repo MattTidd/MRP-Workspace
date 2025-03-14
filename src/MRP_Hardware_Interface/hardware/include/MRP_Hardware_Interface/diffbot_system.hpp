@@ -40,21 +40,31 @@ class DiffBotSystemHardware : public hardware_interface::SystemInterface
 
 struct Config
 {
+  // wheel names:
   std::string front_left_wheel_name = "";
   std::string front_right_wheel_name = "";
   std::string rear_left_wheel_name = "";
   std::string rear_right_wheel_name = "";
 
+  //  communication settings:
   float loop_rate = 0.0;
   std::string device = "";
   int baud_rate = 0;
   int timeout_ms = 0;
   int enc_counts_per_rev = 0;
+
+  // PID settings:
+  int pid_p = 0;
+  int pid_i = 0;
+  int pid_d = 0;
+  int pid_p = 0;
 };
 
 
 public:
   RCLCPP_SHARED_PTR_DEFINITIONS(DiffBotSystemHardware);
+
+  // initialization and configuration functions:
 
   hardware_interface::CallbackReturn on_init(
     const hardware_interface::HardwareInfo & info) override;
@@ -64,6 +74,12 @@ public:
   std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
   // these are the transition functions that are used:
+
+  hardware_interface::CallbackReturn on_configure(
+    const rclcpp_lifecycle::State & previous_state) override;
+
+  hardware_interface::CallbackReturn on_cleanup(
+    const rclcpp_lifecycle::State & previous_state) override;
 
   hardware_interface::CallbackReturn on_activate(
     const rclcpp_lifecycle::State & previous_state) override;
