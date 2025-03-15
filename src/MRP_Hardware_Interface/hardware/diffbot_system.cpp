@@ -273,14 +273,14 @@ hardware_interface::return_type DiffBotSystemHardware::read(
   //   wheel_r_r_.enc
   // );
 
-  // // RCLCPP_INFO(
-  // //   rclcpp::get_logger("DiffBotSystemHardware"),
-  // //   "Encoder read: FL: %d, FR: %d, RL: %d, RR: %d",
-  // //   wheel_f_l_.enc,
-  // //   wheel_f_r_.enc,
-  // //   wheel_r_l_.enc,
-  // //   wheel_r_r_.enc
-  // // );
+  RCLCPP_INFO(
+    rclcpp::get_logger("DiffBotSystemHardware"),
+    "Encoder read: FL: %d, FR: %d, RL: %d, RR: %d",
+    wheel_f_l_.enc,
+    wheel_f_r_.enc,
+    wheel_r_l_.enc,
+    wheel_r_r_.enc
+  );
 
   // get the position & velocity values for the front left wheel:
   double pos_prev = wheel_f_l_.pos;
@@ -319,6 +319,15 @@ hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::
   int motor_f_r_counts_per_loop = wheel_f_r_.cmd / wheel_f_r_.rads_per_count / cfg_.loop_rate;
   int motor_r_l_counts_per_loop = wheel_r_l_.cmd / wheel_r_l_.rads_per_count / cfg_.loop_rate;
   int motor_r_r_counts_per_loop = wheel_r_r_.cmd / wheel_r_r_.rads_per_count / cfg_.loop_rate;
+
+  // RCLCPP_INFO(
+  //   rclcpp::get_logger("DiffBotSystemHardware"),
+  //   "cmds are: FL: %f, FR: %f, RL: %f, RR: %f",
+  //   wheel_f_l_.cmd,
+  //   wheel_f_r_.cmd,
+  //   wheel_r_l_.cmd,
+  //   wheel_r_r_.cmd
+  // );
 
   // RCUTILS_LOG_INFO_NAMED(
   //   "DiffBotSystemHardware",
