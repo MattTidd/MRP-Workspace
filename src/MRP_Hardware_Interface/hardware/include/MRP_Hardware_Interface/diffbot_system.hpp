@@ -49,6 +49,7 @@ struct Config
   //  communication settings:
   float loop_rate = 0.0;
   std::string device = "";
+  
   int baud_rate = 0;
   int timeout_ms = 0;
   int enc_counts_per_rev = 0;
