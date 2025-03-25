@@ -260,27 +260,14 @@ hardware_interface::return_type DiffBotSystemHardware::read(
   double delta_seconds = period.seconds();
   comms_.read_encoder_values(wheel_f_l_.enc, wheel_f_r_.enc, wheel_r_l_.enc, wheel_r_r_.enc);
 
-  // printf("\rEncoder read: FL: %d, FR: %d, RL: %d, RR: %d   ", 
-  //   wheel_f_l_.enc, wheel_f_r_.enc, wheel_r_l_.enc, wheel_r_r_.enc);
-  // fflush(stdout);
-
-  // RCUTILS_LOG_INFO_NAMED(
-  //   "DiffBotSystemHardware",
-  //   "Encoder read: FL: %d, FR: %d, RL: %d, RR: %d \r",
+  // RCLCPP_INFO(
+  //   rclcpp::get_logger("DiffBotSystemHardware"),
+  //   "Encoder read: FL: %d, FR: %d, RL: %d, RR: %d",
   //   wheel_f_l_.enc,
   //   wheel_f_r_.enc,
   //   wheel_r_l_.enc,
   //   wheel_r_r_.enc
   // );
-
-  RCLCPP_INFO(
-    rclcpp::get_logger("DiffBotSystemHardware"),
-    "Encoder read: FL: %d, FR: %d, RL: %d, RR: %d",
-    wheel_f_l_.enc,
-    wheel_f_r_.enc,
-    wheel_r_l_.enc,
-    wheel_r_r_.enc
-  );
 
   // get the position & velocity values for the front left wheel:
   double pos_prev = wheel_f_l_.pos;
@@ -319,6 +306,15 @@ hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::
   int motor_f_r_counts_per_loop = wheel_f_r_.cmd / wheel_f_r_.rads_per_count / cfg_.loop_rate;
   int motor_r_l_counts_per_loop = wheel_r_l_.cmd / wheel_r_l_.rads_per_count / cfg_.loop_rate;
   int motor_r_r_counts_per_loop = wheel_r_r_.cmd / wheel_r_r_.rads_per_count / cfg_.loop_rate;
+  
+  // RCLCPP_INFO(
+  //   rclcpp::get_logger("DiffBotSystemHardware"),
+  //   "cmds are: FL: %d, FR: %d, RL: %d, RR: %d",
+  //   motor_f_l_counts_per_loop,
+  //   motor_f_r_counts_per_loop,
+  //   motor_r_l_counts_per_loop,
+  //   motor_r_r_counts_per_loop
+  // );
 
   // RCLCPP_INFO(
   //   rclcpp::get_logger("DiffBotSystemHardware"),
@@ -327,15 +323,6 @@ hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::
   //   wheel_f_r_.cmd,
   //   wheel_r_l_.cmd,
   //   wheel_r_r_.cmd
-  // );
-
-  // RCUTILS_LOG_INFO_NAMED(
-  //   "DiffBotSystemHardware",
-  //   "Writing: FL: %d, FR: %d, RL: %d, RR: %d \r",
-  //   motor_f_l_counts_per_loop,
-  //   motor_f_r_counts_per_loop,
-  //   motor_r_l_counts_per_loop,
-  //   motor_r_r_counts_per_loop
   // );
 
   // tell arduino to set the values:
