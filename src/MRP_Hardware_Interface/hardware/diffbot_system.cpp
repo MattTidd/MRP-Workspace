@@ -231,6 +231,14 @@ hardware_interface::CallbackReturn DiffBotSystemHardware::on_activate(
   {
     RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Setting PID values, please wait...");
     comms_.set_pid_values(cfg_.pid_p,cfg_.pid_d,cfg_.pid_i,cfg_.pid_o);
+    RCLCPP_INFO(
+      rclcpp::get_logger("DiffBotSystemHardware"),
+      "setting: P: %d, I: %d, D: %d, O: %d",
+      cfg_.pid_p,
+      cfg_.pid_i,
+      cfg_.pid_d,
+      cfg_.pid_o 
+    );
     RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Successfully set PID values!");
   }
   RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Successfully activated!");
@@ -307,14 +315,14 @@ hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::
   int motor_r_l_counts_per_loop = wheel_r_l_.cmd / wheel_r_l_.rads_per_count / cfg_.loop_rate;
   int motor_r_r_counts_per_loop = wheel_r_r_.cmd / wheel_r_r_.rads_per_count / cfg_.loop_rate;
   
-  // RCLCPP_INFO(
-  //   rclcpp::get_logger("DiffBotSystemHardware"),
-  //   "cmds are: FL: %d, FR: %d, RL: %d, RR: %d",
-  //   motor_f_l_counts_per_loop,
-  //   motor_f_r_counts_per_loop,
-  //   motor_r_l_counts_per_loop,
-  //   motor_r_r_counts_per_loop
-  // );
+  RCLCPP_INFO(
+    rclcpp::get_logger("DiffBotSystemHardware"),
+    "cmds are: FL: %d, FR: %d, RL: %d, RR: %d",
+    motor_f_l_counts_per_loop,
+    motor_f_r_counts_per_loop,
+    motor_r_l_counts_per_loop,
+    motor_r_r_counts_per_loop
+  );
 
   // RCLCPP_INFO(
   //   rclcpp::get_logger("DiffBotSystemHardware"),
