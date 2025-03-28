@@ -2,7 +2,6 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="diffbot_ros2_control" params="name prefix">
-
     <ros2_control name="${name}" type="system">
       <hardware>
         <plugin>MRP_Hardware_Interface/DiffBotSystemHardware</plugin>
@@ -41,7 +40,5 @@
         <state_interface name="velocity"/>
       </joint>
     </ros2_control>
-
   </xacro:macro>
-
 </robot>
