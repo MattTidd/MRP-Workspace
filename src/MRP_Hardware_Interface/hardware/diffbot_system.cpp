@@ -324,14 +324,14 @@ hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::
   //   motor_r_r_counts_per_loop
   // );
 
-  RCLCPP_INFO(
-    rclcpp::get_logger("DiffBotSystemHardware"),
-    "cmds are: FL: %f, FR: %f, RL: %f, RR: %f",
-    wheel_f_l_.cmd,
-    wheel_f_r_.cmd,
-    wheel_r_l_.cmd,
-    wheel_r_r_.cmd
-  );
+  // RCLCPP_INFO(
+  //   rclcpp::get_logger("DiffBotSystemHardware"),
+  //   "cmds are: FL: %f, FR: %f, RL: %f, RR: %f",
+  //   wheel_f_l_.cmd,
+  //   wheel_f_r_.cmd,
+  //   wheel_r_l_.cmd,
+  //   wheel_r_r_.cmd
+  // );
 
   // tell arduino to set the values:
   comms_.set_motor_values(
