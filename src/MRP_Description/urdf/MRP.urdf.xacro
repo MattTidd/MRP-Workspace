@@ -2,6 +2,7 @@
 <robot name='MRP' xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:arg name='use_ros2_control' default='true'/>
+    <xacro:arg name="sim_mode" default="false"/>
 
     <!-- include the xacro files that contain our robot -->
     <xacro:include filename = "MRP_Body.xacro"/>
