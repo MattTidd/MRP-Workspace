@@ -315,23 +315,23 @@ hardware_interface::return_type MRP_Hardware_Interface ::DiffBotSystemHardware::
   int motor_r_l_counts_per_loop = wheel_r_l_.cmd / wheel_r_l_.rads_per_count / cfg_.loop_rate;
   int motor_r_r_counts_per_loop = wheel_r_r_.cmd / wheel_r_r_.rads_per_count / cfg_.loop_rate;
   
-  RCLCPP_INFO(
-    rclcpp::get_logger("DiffBotSystemHardware"),
-    "cmds are: FL: %d, FR: %d, RL: %d, RR: %d",
-    motor_f_l_counts_per_loop,
-    motor_f_r_counts_per_loop,
-    motor_r_l_counts_per_loop,
-    motor_r_r_counts_per_loop
-  );
-
   // RCLCPP_INFO(
   //   rclcpp::get_logger("DiffBotSystemHardware"),
-  //   "cmds are: FL: %f, FR: %f, RL: %f, RR: %f",
-  //   wheel_f_l_.cmd,
-  //   wheel_f_r_.cmd,
-  //   wheel_r_l_.cmd,
-  //   wheel_r_r_.cmd
+  //   "counts per loop are: FL: %d, FR: %d, RL: %d, RR: %d",
+  //   motor_f_l_counts_per_loop,
+  //   motor_f_r_counts_per_loop,
+  //   motor_r_l_counts_per_loop,
+  //   motor_r_r_counts_per_loop
   // );
+
+  RCLCPP_INFO(
+    rclcpp::get_logger("DiffBotSystemHardware"),
+    "cmds are: FL: %f, FR: %f, RL: %f, RR: %f",
+    wheel_f_l_.cmd,
+    wheel_f_r_.cmd,
+    wheel_r_l_.cmd,
+    wheel_r_r_.cmd
+  );
 
   // tell arduino to set the values:
   comms_.set_motor_values(
