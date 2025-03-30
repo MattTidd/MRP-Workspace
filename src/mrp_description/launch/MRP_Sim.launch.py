@@ -16,7 +16,7 @@ import os
 from launch import LaunchDescription
 from ament_index_python.packages import get_package_share_directory
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, TimerAction
-from launch.event_handlers import OnProcessExit
+from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -51,18 +51,17 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-                    launch_arguments = {'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path}.items()
+                    launch_arguments = {
+                        # 'verbose': 'true',
+                        'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path}
+                        .items()
              )
- 
+
     # spawner node:
     spawn_entity = Node(package = 'gazebo_ros', executable = 'spawn_entity.py',
                         arguments=['-topic', 'robot_description',
                                    '-entity', 'MRP'],
                         output='screen')
-    
-    # delayed spawner node:
-
-    delayed_spawn = TimerAction(period=5.0, actions=[spawn_entity])
     
     # spawn the diff_drive controller:
     diff_drive_spawner = Node(
@@ -79,14 +78,22 @@ def generate_launch_description():
         condition = IfCondition(LaunchConfiguration("use_ros2_control")),
         arguments = ['joint_state_broadcaster']
     )
+
+    # joystick node:
+    joystick_node = IncludeLaunchDescription(PythonLaunchDescriptionSource([os.path.join(
+        get_package_share_directory('mrp_description'), 'launch', 'joystick.launch.py')])
+        , launch_arguments = {'use_ros_control': use_ros2_control}.items()
+    )
+
     
     return LaunchDescription([
         use_sim_time_arg,
         use_ros2_control_arg,
         robot_state_publisher,
         gazebo, 
-        delayed_spawn,
+        spawn_entity,
         diff_drive_spawner,
-        joint_broadcaster_spawner
+        joint_broadcaster_spawner,
+        joystick_node
     ])
 
