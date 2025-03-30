@@ -73,8 +73,8 @@ def generate_launch_description():
             default_value='true',
             description='Use ros2_control if true'),
 
-        gazebo, 
         robot_state_publisher,
+        gazebo, 
         spawn_entity,
         diff_drive_spawner,
         joint_broadcaster_spawner
