@@ -40,7 +40,7 @@ def generate_launch_description():
     robot_description_config = Command(['xacro ', xacro_file])
     params = {'robot_description': ParameterValue(robot_description_config, value_type = str), 'use_sim_time': use_sim_time}
 
-    # create a robot_state_publisher node
+    # create a robot_state_publisher node:
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -48,8 +48,56 @@ def generate_launch_description():
         parameters=[params]
     )
 
+    # robot description & controller parameters:
+    robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
+    controller_params_file = os.path.join(get_package_share_directory('mrp_real_robot'),'config','my_controllers.yaml')
+
+    # controller manager:
+    controller_manager = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[{'robot_description': robot_description},
+                    controller_params_file]
+    )
+
+    # delayed controller manager:
+    delayed_controller_manager = TimerAction(period=2.0, actions=[controller_manager])
+
+    # diff drive controller:
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diff_drive_controller"],
+    )
+
+    # delayed diff drive controller:
+    delayed_diff_drive_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=controller_manager,
+            on_start=[diff_drive_spawner],
+        )
+    )
+
+    # joint broadcaster controller:
+    joint_broad_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster"],
+    )
+
+    # delayed joint broadcaster controller:
+    delayed_joint_broad_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=controller_manager,
+            on_start=[joint_broad_spawner],
+        )
+    )
+
     # launch:
     return LaunchDescription([
         use_sim_time_arg, 
-        robot_state_publisher
+        robot_state_publisher, 
+        delayed_controller_manager, 
+        delayed_diff_drive_spawner,
+        delayed_joint_broad_spawner
     ])

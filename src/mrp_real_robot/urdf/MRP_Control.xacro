@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <ros2_control name="RealRobot" type="system">
         <hardware>
-            <plugin>MRP_Hardware_Interface/DiffBotSystemHardware</plugin>
+            <plugin>mrp_hardware_interface/DiffBotSystemHardware</plugin>
             <param name="front_left_wheel_name">front_left_wheel_joint</param>
             <param name="front_right_wheel_name">front_right_wheel_joint</param>
             <param name="rear_left_wheel_name">rear_left_wheel_joint</param>
