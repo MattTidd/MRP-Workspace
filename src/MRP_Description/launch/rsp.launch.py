@@ -29,7 +29,7 @@ def generate_launch_description():
     # launch arguments:
     use_sim_time_arg = DeclareLaunchArgument(
         'use_sim_time',
-        default_value='true',
+        default_value='false',
         description='Use sim time if true')
     
     use_ros2_control_arg = DeclareLaunchArgument(
