@@ -39,8 +39,8 @@
         <visual>
             <origin xyz = '0 0 0' rpy = '1.570796 0 0'/>
             <geometry>
-                <!-- <mesh filename = "file://$(find mrp_description)/meshes/entire_chassis.stl" scale = "0.001 0.001 0.001"/> -->
-                <mesh filename = "package://mrp_description/meshes/entire_chassis.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find mrp_description)/meshes/entire_chassis.stl" scale = "0.001 0.001 0.001"/>
+                <!-- <mesh filename = "package://mrp_description/meshes/entire_chassis.stl" scale = "0.001 0.001 0.001"/> -->
             </geometry>
             <material name = 'light gray'/>
         </visual>
@@ -78,8 +78,8 @@
         <visual>
             <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
-                <!-- <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/> -->
-                <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
+                <!-- <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/> -->
             </geometry>
             <material name = 'purple'/>
         </visual>
@@ -118,8 +118,8 @@
         <visual>
             <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
-                <!-- <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/> -->
-                <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
+                <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
+                <!-- <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/> -->
             </geometry>
             <material name = 'purple'/>
         </visual>
@@ -158,8 +158,8 @@
         <visual>
             <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
-                <!-- <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/> -->
-                <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>   
+                <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
+                <!-- <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>    -->
             </geometry>
             <material name = 'purple'/>
         </visual>
@@ -198,8 +198,8 @@
         <visual>
             <origin xyz = "0 0 0.012" rpy = "0 1.570796 0"/>
             <geometry>
-                <!-- <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/> -->
-                <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/> 
+                <mesh filename = "file://$(find mrp_description)/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>
+                <!-- <mesh filename = "package://mrp_description/meshes/wheel_coupler_assembly.stl" scale = "0.001 0.001 0.001"/>  -->
             </geometry>
             <material name = 'purple'/>
         </visual>
