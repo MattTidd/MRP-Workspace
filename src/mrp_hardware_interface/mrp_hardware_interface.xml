@@ -1,0 +1,9 @@
+<library path="mrp_hardware_interface">
+  <class name="mrp_hardware_interface/DiffBotSystemHardware"
+         type="mrp_hardware_interface::DiffBotSystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ros2_control for the MRP. It uses velocity command and position state interface, and is for a four-wheeled differentially driven robot.
+    </description>
+  </class>
+</library>
