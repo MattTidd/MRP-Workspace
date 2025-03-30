@@ -103,6 +103,7 @@
     <gazebo>
         <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
             <parameters>$(find MRP_Description)/config/my_controllers.yaml</parameters>
+            <parameters>$(find MRP_Description)/config/gazebo_ros2_control_sim.yaml</parameters>
         </plugin>
     </gazebo>
 
