@@ -58,9 +58,16 @@ def generate_launch_description():
         ]
     )
 
+    # joystick node:
+    joystick_node = IncludeLaunchDescription(PythonLaunchDescriptionSource([os.path.join(
+        get_package_share_directory('mrp_description'), 'launch', 'joystick.launch.py')])
+        , launch_arguments = {'use_ros_control': 'true'}.items()
+    )
+
     return LaunchDescription([
         mirrored_robot_state_publisher, 
         gazebo_node, 
         spawn_entity,
+        joystick_node
     ])
     
