@@ -25,8 +25,8 @@ endif()
 
 # install:
 install(
-  DIRECTORY launch urdf config meshes   # these are the directories I need
-  DESTINATION share/${PROJECT_NAME}     # this is the destination 
+  DIRECTORY launch urdf config meshes    # these are the directories I need
+  DESTINATION share/${PROJECT_NAME}      # this is the destination 
 )
 
 ament_package()
