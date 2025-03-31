@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <gazebo>
-        <plugin filename = 'libodom_mirror.so' name = 'odom_mirror'/>
-        <plugin filename = 'libjoint_state_mirror.so' name = 'joint_state_mirror'/>
+        <plugin filename = 'libodom_mirror.so' name = 'odom_mirror'>
+            <namespace>mirrored_states</namespace>
+        </plugin>
+        <plugin filename = 'libjoint_state_mirror.so' name = 'joint_state_mirror'>
+            <namespace>mirrored_states</namespace>
+        </plugin>
     </gazebo>
-    
 </robot>
 
 
